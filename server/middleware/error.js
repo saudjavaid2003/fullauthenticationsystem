@@ -10,23 +10,23 @@ export const errormiddleware = (err, req, res, next) => {
     err.statusCode = err.statusCode || 400;
 
     if (err.name === "CastError") {
-        const message = `Invalid ${err.path}`;
-        err = new CustomError(message, 400);
+        err.message = `Invalid ${err.path}`;
+        err.statusCode = 400;
     }
 
     if (err.name === "JsonWebTokenError") {
-        const message = "Invalid token";
-        err = new CustomError(message, 400);
+        err.message = "Invalid token";
+        err.statusCode = 400;
     } 
 
     if (err.name === "TokenExpiredError") {
-        const message = "Token has expired";
-        err = new CustomError(message, 400);
+        err.message = "Token has expired";
+        err.statusCode = 400;
     }
 
     if (err.code === 11000) {
-        const message = `Duplicate ${Object.keys(err.keyValue)} entered`;
-        err = new CustomError(message, 400);
+        err.message = `Duplicate ${Object.keys(err.keyValue)} entered`;
+        err.statusCode = 400;
     }
 
     return res.status(err.statusCode).json({
