@@ -20,10 +20,14 @@ const userSchema = new mongoose.Schema({
         minlength: 8,
         maxlength: 32
     },
-    phoneNumber: {
+    phone: {
         type: String,
         required: true
     },
+    accountverified:{
+        type:Boolean
+    },
+
     verificationCode: {
         type: Number
     },
