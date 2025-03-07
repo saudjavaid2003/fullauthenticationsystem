@@ -24,9 +24,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    accountverified:{
-        type:Boolean
-    },
+    accountVerified: {
+        type: Boolean,
+        default: false
+    },    
 
     verificationCode: {
         type: Number
@@ -59,6 +60,21 @@ userSchema.pre("save", async function (next) {
 userSchema.methods.comparePassword = async function (enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
 };
+userSchema.methods.generateVerificationCode= async function(){
+    function generateRandomFiveDigits(){
+        const firstDigit = Math.floor(Math.random() * 9) + 1;
+
+        const remainingDigits=Math.floor(Math.random()*10000).toString().padStart(4,0);
+        return parseInt(firstDigit + remainingDigits);
+
+    }
+    const verificationCode=generateRandomFiveDigits();
+    this.verificationCode=verificationCode;
+    this.verificationCodeExpire = Date.now() + 5 * 60 * 1000;
+
+    return verificationCode;
+
+}
 
 const User = mongoose.model("User", userSchema);
 export default User;
