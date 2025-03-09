@@ -15,7 +15,7 @@ app.use(cors({
 }));
 
 app.use(urlencoded({ extended: true }));
-app.use(express.json());
+app.use(express.json())
 
 connect().catch((err) => {
     console.error("Database connection failed:", err);
